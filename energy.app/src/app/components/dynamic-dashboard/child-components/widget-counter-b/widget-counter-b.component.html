@@ -1,0 +1,39 @@
+<div class=" row align-items-center h-100">
+	<div class="col-lg-3 text-center icon-content"
+	 >
+		  <i [ngStyle]="{'color':widget.widgetProperty?.contents?.entitiesIcon?.fontColor}"
+		  class="{{widget?.widgetProperty?.contents?.entitiesIcon?.iconClass}} fa-{{widget?.widgetProperty?.contents?.entitiesIcon?.fontSize}}x" style="margin-top:-15px"></i>
+	  </div>
+
+	  <div class="text-center p-10" [ngClass]="{'col-lg-7':widget.widgetProperty?.contents?.entitiesIcon?.isRequired,'col-lg-9':!widget.widgetProperty?.contents?.entitiesIcon?.isRequired}">
+		  <div  class="widget-readings-box">
+			<div class="widget-reading-left">
+				<h4 [ngStyle]="{
+				'font-size':widget.widgetProperty?.contents?.activeCount?.fontSize+'px',
+				'font-family':widget.widgetProperty?.contents?.activeCount?.fontFamily,
+				'color':widget.widgetProperty?.contents?.activeCount?.fontColor}">{{count.active}}</h4>
+			  <p [ngStyle]="{
+				'font-size':widget.widgetProperty?.contents?.active?.fontSize+'px',
+				'font-family':widget.widgetProperty?.contents?.active?.fontFamily,
+				'color':widget.widgetProperty?.contents?.active?.fontColor}">{{widget?.widgetProperty?.contents?.active?.title}}</p>
+			  
+			</div>
+			<div class="widget-reading-right">
+				  <h4 [ngStyle]="{
+				'font-size':widget.widgetProperty?.contents?.inactiveCount?.fontSize+'px',
+				'font-family':widget.widgetProperty?.contents?.inactiveCount?.fontFamily,
+				'color':widget.widgetProperty?.contents?.inactiveCount?.fontColor}">{{count.inactive}}</h4>
+			  <p  [ngStyle]="{
+				'font-size':widget.widgetProperty?.contents?.inactive?.fontSize+'px',
+				'font-family':widget.widgetProperty?.contents?.inactive?.fontFamily,
+				'color':widget.widgetProperty?.contents?.inactive?.fontColor}">{{widget?.widgetProperty?.contents?.inactive?.title}}</p>
+			</div>
+		  </div>
+		  <p [ngStyle]="{
+		'font-size':widget.widgetProperty?.contents?.entities?.fontSize+'px',
+		'font-family':widget.widgetProperty?.contents?.entities?.fontFamily,
+		'color':widget.widgetProperty?.contents?.entities?.fontColor}">{{widget?.widgetProperty?.contents?.entities?.title}}</p>
+	
+	</div>
+	
+  </div>

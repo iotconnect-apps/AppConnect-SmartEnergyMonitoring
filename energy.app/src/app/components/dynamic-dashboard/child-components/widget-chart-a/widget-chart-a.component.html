@@ -1,0 +1,22 @@
+  <div >
+	<div class="drag-body dashboard-widget h-100">
+		<div class="panel-heading" [ngStyle]="{'background':widget?.widgetProperty?.background}">
+			<h5 class="panel-title"
+			[ngStyle]="{'font-size':widget?.widgetProperty?.fontSize+'px',
+			'font-family':widget?.widgetProperty?.fontFamily,
+			'color':widget?.widgetProperty?.fontColor}">{{widget?.widgetProperty?.title}} </h5>
+		</div>
+	  <mat-card style="padding-bottom: 0px;"  [ngStyle]="{'height':widget.properties.h - 55+'px'}" >
+		<mat-radio-group aria-label="Select an option" (change)="changeenergy($event)" >
+		  <mat-radio-button checked class="m-r-10" value="Day">Day</mat-radio-button>
+		  <mat-radio-button class="m-r-10" value="Week">Week</mat-radio-button>
+		  <mat-radio-button class="m-r-10" value="Month">Month</mat-radio-button>
+		</mat-radio-group>
+		<google-chart  *ngIf="usageByenergyChart.dataTable.length" [data]="usageByenergyChart"></google-chart>
+		<div *ngIf="!usageByenergyChart.dataTable.length"
+		class="text-center d-flex align-items-center justify-content-center" [ngStyle]="{'height':widget.properties.h - 80+'px'}">
+	 No data found
+   </div>
+	  </mat-card>
+	</div>
+  </div>

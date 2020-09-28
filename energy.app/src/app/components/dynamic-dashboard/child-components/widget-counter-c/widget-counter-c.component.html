@@ -1,0 +1,21 @@
+<div class="col row align-items-center h-100">
+	<div class="col-lg-5 text-center icon-content"
+	  *ngIf="widget.widgetProperty?.contents?.icon?.isRequired">
+		  <i [ngStyle]="{'color':widget.widgetProperty?.contents?.icon?.fontColor}"
+		  class="{{widget?.widgetProperty?.contents?.icon?.iconClass}} fa-{{widget?.widgetProperty?.contents?.icon?.fontSize}}x"></i>
+	  </div>
+	  <div class="text-center" [ngClass]="{'col-lg-7':widget.widgetProperty?.contents?.icon?.isRequired,'col-lg-12':!widget.widgetProperty?.contents?.icon?.isRequired}">
+		  <h4
+		  [ngStyle]="{
+		  'font-size':widget.widgetProperty?.contents?.count?.fontSize+'px',
+		  'font-family':widget.widgetProperty?.contents?.count?.fontFamily,
+		  'color':widget.widgetProperty?.contents?.count?.fontColor}">
+		  {{count}}KW</h4>
+		  <p class="m-0"
+		  [ngStyle]="{
+		  'font-size':widget.widgetProperty?.contents?.entities?.fontSize+'px',
+		  'font-family':widget.widgetProperty?.contents?.entities?.fontFamily,
+		  'color':widget.widgetProperty?.contents?.entities?.fontColor}">
+		  {{widget?.widgetProperty?.contents?.entities?.title}}</p>
+	  </div>
+  </div>

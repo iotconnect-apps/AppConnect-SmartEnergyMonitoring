@@ -1,0 +1,215 @@
+<section class="content-header">
+  <h1>
+    <a [routerLink]="['/facilities']">
+      <img class="mr-1 mb-1" src="../../../../assets/images/back-arrow-icon.svg" />
+    </a>
+    {{faciltyName}}
+  </h1>
+  <div class="content-header-action">
+    <div>
+      <mat-form-field>
+        <mat-label>Production Zone</mat-label>
+        <mat-select (selectionChange)="onZoneChange($event)" [(ngModel)]="selectedZone" >
+          <ng-container *ngFor="let data of zoneTypeList">
+            <mat-option [value]="data.guid">{{data.name}}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+</section>
+<div class="main-page dashboard">
+  <div class="row dashboardtop-widget">
+    <div class="col-xl-3 col-lg-6">
+      <div class="dashboard-chart bgbluewidget text-center">
+        <h4>{{facilityObj.totalSubEntities}}</h4>
+        <p class="small-widget-heading">Total Zones</p>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+      <div class="dashboard-chart bggreenlwidget text-center">
+        <div class="widget-readings-box">
+          <div class="widget-reading-left">
+            <h4>{{facilityObj.totalDevices}}</h4>
+            <p>Total</p>
+          </div>
+          <div class="widget-reading-right">
+            <h4>{{facilityObj.totalConnected}}</h4>
+            <p>Connected</p>
+            <h4>{{facilityObj.totalDisconnected}}</h4>
+            <p>Disconnected</p>
+          </div>
+        </div>
+        <p class="small-widget-heading">Total Meters</p>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+      <div class="dashboard-chart bgpinkwidget text-center">
+        <div class="widget-readings-box">
+          <div class="widget-reading-left">
+            <h4>{{facilityObj.totalEnergy}} KW</h4>
+            <p>Total</p>
+          </div>
+          <div class="widget-reading-right">
+            <h4><a href="#"> {{facilityObj.maxDeviceEnergyCount?facilityObj.maxDeviceName:'--'}}</a></h4>
+            <p>Highest Usage Meter</p>
+            <h4><a href="#"> {{facilityObj.minDeviceName?facilityObj.minDeviceName:'--'}}</a></h4>
+            <p>Lowest Usage Meter</p>
+          </div>
+        </div>
+        <p class="small-widget-heading">Energy Consumption (This Month)</p>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+      <div class="dashboard-chart bgyellowwidget text-center">
+        <h4>{{facilityObj.totalAlerts}}</h4>
+        <p class="small-widget-heading">Total Alerts (This Month)</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xl-8 m-b-30">
+    <div class="drag-body dashboard-widget h-100">
+      <div class="panel-heading">
+        <h5 class="panel-title"> Meters </h5>
+      </div>
+      <mat-card class="dashboard-card mat-card">
+        <div class="d-flex justify-content-end mb-3">
+        <div class="content-header-action align-items-center">
+          <ul class="legend-list mb-0">
+            <li ><span class="status-available"></span>Connected</li>
+            <li ><span class="status-unavailable"></span>Disconnected</li>
+          </ul>
+        </div>
+        </div>
+        <div class="meter-container">
+          <div class="row">
+            <ng-container *ngIf="meters.length > 0">
+              <div class="col-lg-6 m-b-30" *ngFor="let data of meters">
+                <div class="user-grid-box">
+                  <div title="Change Status" class="cursor user-status-indicator " [ngClass]="{'status-green':data.isConnected,'status-red':!data.isConnected}"></div>
+                  <div class="grid-inner-flex d-flex align-items-center pb-3">
+                    <div class="user-image-box">
+                      <img alt="" class="img-fluid ng-star-inserted"
+                        [src]="data.image?mediaUrl+data.image:'../../../../assets/images/meter.jpg'">
+                    </div>
+                    <div class="user-detail-box">
+                      <h3 class="user-name">
+                        Meter ID <a href="javascript:void();"  [routerLink]="['/meter/meter-dashboard',data['guid']]">{{data.uniqueId}}</a>
+                      </h3>
+                      <div class="facility-location">
+                        <div class="d-flex align-items-start">
+                          <div>
+                            <p class="mb-0">Assigned to: <span>{{data.subEntityName}}</span></p>
+                            <p class="mb-0">Alerts: <span>{{data.totalAlert}}</span></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-actions d-flex flex-wrap">
+                    <div class="user-actions-cta text-center ng-star-inserted">
+                      Current Reading - <strong>{{data.currentEnergy?data.currentEnergy:0}}KW</strong>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <div *ngIf="meters.length==0" class="centerclass">
+              No records found
+            </div>
+        </div>
+      </div>
+      </mat-card>
+    </div>
+  </div>
+  <div class="col-xl-4 m-b-30">
+    <div class="drag-body dashboard-widget">
+      <div class="panel-heading">
+        <h5 class="panel-title w-100"> Alerts </h5>
+        <div *ngIf="alerts.length>0" style="margin-right: 20px;" class="tab-link-bar">
+          <a class="text-nowrap" [routerLink]="['/alerts']" href="javascript:;">View All</a>
+        </div>
+      </div>
+      <mat-card class="dashboard-card mat-card pt-0 alerts-widget">
+        <ul  class="alerts-dashboard alerts-dashboard-facility">
+          <ng-container *ngIf="alerts.length>0">
+            <li [ngClass]="alert['severity']" *ngFor="let alert of alerts">
+              <span class="alerts-date">{{getLocalDate(alert['eventDate'])}}</span>
+              <span class="alerts-info">{{alert.message}}</span>
+            </li>
+          </ng-container>
+          <li *ngIf="alerts.length==0" class="centerclass">
+            No records found
+          </li>
+        </ul>
+        
+        <div *ngIf="alerts.length>0" class="alert-indicator-wrapper">
+          <div class="alert-indicator-list">
+            <div class="alert-indicator Critical">
+              <span class="legend"></span>
+              <span class="alert-text">Critical</span>
+            </div>
+            <div class="alert-indicator Information">
+              <span class="legend"></span>
+              <span class="alert-text">Information</span>
+            </div>
+            <div class="alert-indicator Major">
+              <span class="legend"></span>
+              <span class="alert-text">Major</span>
+            </div>
+            <div class="alert-indicator Minor">
+              <span class="legend"></span>
+              <span class="alert-text">Minor</span>
+            </div>
+            <div class="alert-indicator Warning">
+              <span class="legend"></span>
+              <span class="alert-text">Warning</span>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xl-6 m-b-30">
+    <div class="drag-body dashboard-widget h-100">
+      <div class="panel-heading">
+        <h5 class="panel-title"> Energy Consumption : {{preyear}}-{{currentyear}} </h5>
+      </div>
+      <mat-card class="dashboard-card mat-card">
+        <google-chart *ngIf="chart['EnergyConsumption']['dataTable'].length" #cchart [data]="chart['EnergyConsumption']">
+        </google-chart>
+        <div *ngIf="!chart['EnergyConsumption']['dataTable'].length"
+        class="text-center d-flex align-items-center justify-content-center" style="height: 300px;">
+     No data found
+   </div>
+      </mat-card>
+    </div>
+  </div>
+  <div class="col-xl-6 m-b-30">
+    <div class="drag-body dashboard-widget h-100">
+      <div class="panel-heading">
+        <h5 class="panel-title"> Energy Consumption by Meter </h5>
+      </div>
+      <mat-card class="dashboard-card mat-card">
+        <mat-radio-group aria-label="Select an option" (change)="changeenergy($event)" *ngIf="chart['meterStatus']['dataTable'].length">
+          <mat-radio-button checked class="m-r-10" value="Day">Day</mat-radio-button>
+          <mat-radio-button class="m-r-10" value="Week">Week</mat-radio-button>
+          <mat-radio-button class="m-r-10" value="Month">Month</mat-radio-button>
+        </mat-radio-group>
+        <google-chart *ngIf="chart['meterStatus']['dataTable'].length" #cchart
+        [data]="chart['meterStatus']"></google-chart>
+        <div *ngIf="!chart['meterStatus']['dataTable'].length"
+        class="text-center d-flex align-items-center justify-content-center" style="height: 300px;">
+     No data found
+   </div>
+      </mat-card>
+    </div>
+  </div>
+  
+</div>
+

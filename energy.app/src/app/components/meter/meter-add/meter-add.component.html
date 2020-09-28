@@ -1,0 +1,167 @@
+<!-- Content Header (Page header) -->
+
+<section class="content-header">
+  <h1>{{moduleName}}</h1>
+</section>
+<!-- Main content -->
+
+<section class="content">
+  <mat-card class="support-card">
+    <div class="row">
+      <div class="col col-ld-11">
+        <form [formGroup]="sensorForm" (ngSubmit)="addSensor()" autocomplete="off"
+              class="form-horizontal common-form">
+          <div class="row">
+            <div class="col-md-4">
+              <fieldset class="form-group form-field">
+                <label class="form-label">Facility<b>*</b></label>
+                <mat-form-field>
+                  <mat-select placeholder="Select Facility" formControlName="sensorGuid"
+                              [(ngModel)]="sensorObject['sensorGuid']" tabindex="1"
+                              (selectionChange)="getZone($event.value)">
+                    <mat-option *ngFor="let facility of facilityList"
+                                [value]="getdata(facility?.value)">
+                      {{facility.text}}
+                    </mat-option>
+                  </mat-select>
+                  <div class="form-control-feedback" *ngIf="sensorForm.controls['sensorGuid'].errors">
+                    <p class="form-tooltip-error sm" [ngClass]="{'error':true}"
+                       *ngIf="sensorForm.controls['sensorGuid'].errors.required && checkSubmitStatus">
+                      Please select Facility
+                    </p>
+                  </div>
+                </mat-form-field>
+              </fieldset>
+            </div>
+
+            <div class="col-md-4">
+              <fieldset class="form-group form-field">
+                <label class="form-label">Zone<b>*</b></label>
+                <mat-form-field>
+                  <mat-select placeholder="Select Zone" formControlName="entityGuid"
+                              [(ngModel)]="sensorObject['entityGuid']" tabindex="2">
+                    <mat-option *ngFor="let zone of zoneList" [value]="zone?.guid">
+                      {{zone.name}}
+                    </mat-option>
+                  </mat-select>
+                  <div class="form-control-feedback" *ngIf="sensorForm.controls['entityGuid'].errors">
+                    <p class="form-tooltip-error sm" [ngClass]="{'error':true}"
+                       *ngIf="sensorForm.controls['entityGuid'].errors.required && checkSubmitStatus">
+                      Please select Zone
+                    </p>
+                  </div>
+                </mat-form-field>
+              </fieldset>
+            </div>
+
+            <div class="col-md-4">
+              <fieldset class="form-group form-field">
+                <label class="form-label">Name<b>*</b></label>
+                <mat-form-field>
+                  <input matInput name="name" formControlName="name" maxlength="60" type="text"
+                         [(ngModel)]="sensorObject['name']" class="form-control" tabindex="3"
+                         placeholder="Name">
+                  <div class="form-control-feedback" *ngIf="sensorForm.controls['name'].errors">
+                    <p class="form-tooltip-error sm" [ngClass]="{'error':true}"
+                       *ngIf="sensorForm.controls['name'].errors.required && checkSubmitStatus">
+                      Please enter Name
+                    </p>
+                  </div>
+                </mat-form-field>
+              </fieldset>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <fieldset class="form-group form-field">
+                <label class="form-label">Meter ID<b>*</b></label>
+                <mat-form-field>
+                  <input matInput name="uniqueId" formControlName="uniqueId" type="text"
+                         [(ngModel)]="sensorObject['uniqueId']" class="form-control" tabindex="6"
+                         placeholder="Meter ID" maxlength="128">
+                  <div class="form-control-feedback" *ngIf="sensorForm.controls['uniqueId'].errors">
+                    <p class="form-tooltip-error sm" [ngClass]="{'error':true}"
+                       *ngIf="sensorForm.controls['uniqueId'].errors.required && checkSubmitStatus">
+                      Please enter Meter ID
+                    </p>
+                    <p class="form-tooltip-error sm " [ngClass]="{'error':true}"
+                       *ngIf="sensorForm.controls['uniqueId'].errors.pattern && checkSubmitStatus">
+                      Special characters and white space not allowed in Meter ID
+                    </p>
+                  </div>
+                </mat-form-field>
+              </fieldset>
+            </div>
+            <div class="col-md-4">
+              <fieldset class="form-group form-field">
+                <label class="form-label">Specification</label>
+                <mat-form-field>
+                  <textarea matInput rows="3" maxlength="260" tabindex="7" class="form-control"
+                            formControlName="specification" placeholder="Specification"
+                            name="specification"></textarea>
+                </mat-form-field>
+              </fieldset>
+            </div>
+            <div class="col-md-4">
+              <fieldset class="form-group form-field">
+                <label class="form-label">Description</label>
+                <mat-form-field>
+                  <textarea matInput rows="3" maxlength="260" tabindex="8" class="form-control"
+                            formControlName="description" placeholder="Description"
+                            name="description"></textarea>
+                </mat-form-field>
+              </fieldset>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <mat-label>Meter Image</mat-label>
+              <fieldset class="form-group">
+                <label for="myFile" class="upload-file">
+                  <input formControlName="imageFile" #myFile id="myFile" (change)="handleImageInput($event)"
+                         class="upload-image" type="file" accept=".jpg, .jpeg, .png" />
+                  <div class="form-control-feedback" *ngIf="sensorForm.controls['imageFile'].errors">
+                    <p class="form-tooltip-error sm" [ngClass]="{'error':true}"
+                       *ngIf="sensorForm.controls['imageFile'].errors.required && checkSubmitStatus">
+                      Upload Image
+                    </p>
+                  </div>
+                </label>
+              </fieldset>
+              <fieldset class="form-group">
+                <ul class="image-list ">
+                  <li>
+                    <div class="user-profle-image">
+                      <img alt="" class="img-fluid"
+                           src="{{fileUrl == '00000000-0000-0000-0000-000000000000' || fileUrl == null || fileUrl == '' ? _appConstant.noImg:  fileUrl}}" />
+                    </div>
+                    <span *ngIf="fileUrl">
+                      <i class="material-icons" (click)="imageRemove()">clear</i>
+                    </span>
+                  </li>
+                </ul>
+              </fieldset>
+              <p>{{fileName}}</p>
+            </div>
+          </div>
+          <div class="row mt-4 mb-0">
+            <div class="col-lg-12">
+              <div class="form-field">
+                <div class="input-field ">
+                  <button mat-flat-button color="primary" class="text-white " title="Submit"
+                          type="submit">
+                    Submit
+                  </button>
+                  <button mat-flat-button color="primary" class="text-white m-l-10"
+                          [routerLink]="['/meter']" title="Cancel">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </mat-card>
+</section>

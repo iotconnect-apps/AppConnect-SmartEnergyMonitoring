@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="457d1cbf-b771-4ef6-b24c-48b123619b29" ChangeDateTime="03/26/2020 06:38:09">
+    <Property Name="ElementName" Value="[dbo].[Company].[gensetGuid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Company]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="entityGuid" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="19a23d51-1bfe-4016-a390-da8b8cadcde9" ChangeDateTime="03/26/2020 06:41:49">
+    <Property Name="ElementName" Value="[dbo].[User].[gensetGuid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[User]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="entityGuid" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4d880bb7-3ce0-4ed7-a489-9c310b2badcb" ChangeDateTime="03/26/2020 07:39:30">
+    <Property Name="ElementName" Value="[dbo].[TelemetrySummary_Daywise].[gensetGuid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[TelemetrySummary_Daywise]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="entityGuid" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="dd01ba70-1bfe-4f98-9fb7-501b20413c60" ChangeDateTime="03/26/2020 07:40:06">
+    <Property Name="ElementName" Value="[dbo].[TelemetrySummary_Hourwise].[gensetGuid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[TelemetrySummary_Hourwise]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="entityGuid" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3bc0760f-db00-4aa0-8a1f-fbc92c590215" ChangeDateTime="04/08/2020 10:29:27">
+    <Property Name="ElementName" Value="[dbo].[TelemetrySummary_Daywise].[entityGuid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[TelemetrySummary_Daywise]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="deviceGuid" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a99d0cf2-9911-49a8-a3b7-5c37ca70ef71" ChangeDateTime="04/08/2020 10:29:39">
+    <Property Name="ElementName" Value="[dbo].[TelemetrySummary_Hourwise].[entityGuid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[TelemetrySummary_Hourwise]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="deviceGuid" />
+  </Operation>
+</Operations>

@@ -1,0 +1,126 @@
+<section class="content-header">
+	<h1>{{moduleName}}</h1>
+	<div class="content-header-action">
+		<div>
+			<app-search-render [searchValue]="searchParameters.searchText" (searchEvent)="searchTextCallback($event)">
+			</app-search-render>
+		</div>
+		
+		<div class="p-l-10"><button type="button" (click)="clickAdd()" mat-flat-button color="primary"
+				class="text-white" title="Add Zone">Add Zone</button></div>
+				<div class="p-l-10">
+					<button [ngClass]="isFilterShow ? 'grid-icon-active' : 'grid-icon' " type="button" mat-flat-button color="primary"
+							class="width-auto text-white" (click)="showHideFilter()">
+					  <img src="../../../../assets/images/filter-icon-white.svg" alt="">
+					</button>
+				  </div>
+	</div>
+</section>
+<div class="content">
+	<mat-card class="example-card filter-card" *ngIf="isFilterShow">
+	  <mat-card-header class="filter-card-head">
+		<a href="javascript:void()" (click)="showHideFilter()">
+		  <img src="../../../../assets/images/close-icon.svg" alt="">
+		</a>
+	  </mat-card-header>
+	  <mat-card-content>
+		<form>
+		  <div class="filter-wrap">
+			<div class="filter-label">
+			  <label for=""><img src="../../../assets/images/filter-icon.svg" alt=""><span>Filter</span></label>
+			</div>
+			<div class="filter-form-field">
+			  <ul class="filter-list-form">
+				<li>
+				  <label class="form-label">Facility</label>
+				  <div class="support-field">
+					<div class="field-input">
+					  <mat-form-field class="">
+						<mat-select placeholder="Select Facility" [(ngModel)]="selectedFacility" [ngModelOptions]="{standalone: true}">
+						  <mat-option *ngFor="let facility of facilityList" [value]="facility.value">
+							{{facility.text}}
+						  </mat-option>
+						</mat-select>
+					  </mat-form-field>
+					</div>
+				  </div>
+				</li>              
+				<li>
+				  <div class="filter-form-action">
+					<button type="button" mat-flat-button color="primary" (click)="filterBy(selectedFacility);">Apply</button>
+					<button type="button" mat-flat-button color="primary" class="text-white m-l-10" (click)="clearFilter()">Clear</button>
+				  </div>
+				</li>
+			  </ul>
+			</div>
+		  </div>
+		</form>
+	  </mat-card-content>
+	</mat-card>
+  </div>
+<div class="content p-t-0">
+	<div class="table-container">
+		<table mat-table [dataSource]="zoneList" matSort class="mat-elevation-z8" (matSortChange)="setOrder($event)"
+			matSortActive="type" matSortDirection="asc" matSortDisableClear>
+			<!-- Name Column -->
+			<ng-container matColumnDef="type">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Zone Id </th>
+				<td mat-cell *matCellDef="let element"> {{element.type}}</td>
+			</ng-container>
+
+			<!-- Name Column -->
+			<ng-container matColumnDef="name">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Zone Name </th>
+				<td mat-cell *matCellDef="let element"> {{element.name}} </td>
+			</ng-container>
+
+			<!-- Type Column -->
+			<ng-container matColumnDef="totalDevices">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> No of Meters </th>
+				<td mat-cell *matCellDef="let element"> {{element.totalDevices}} </td>
+			</ng-container>
+
+			
+			<!-- Type Column -->
+			<ng-container matColumnDef="parentEntityName">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> Facility </th>
+				<td mat-cell *matCellDef="let element"> {{element.parentEntityName}} </td>
+			</ng-container>
+
+			<ng-container matColumnDef="action">
+				<th mat-header-cell *matHeaderCellDef class="w110">Actions</th>
+				<td mat-cell *matCellDef="let element">
+					<div class="table-icons" *ngIf="(element.guid == ((currentUser.userDetail.id | lowercase)))">
+						<a class="green disable-link" href="javascript:void(0)" title="Edit">
+							<img alt="Edit" src="./assets/images/icon-edit.svg">
+						</a>
+						<a class="red disable-link" href="javascript:void(0)" title="Delete">
+							<!-- <i class="far fa-trash-alt"></i> -->
+							<img src="./assets/images/icon-delete.svg">
+						</a>
+					</div>
+					<div class="table-icons" *ngIf="(element.guid != ((currentUser.userDetail.id | lowercase)))">
+						<a class="green" [routerLink]="['/zone',element.guid]" title="Edit">
+							<img alt="Edit" src="./assets/images/icon-edit.svg">
+						</a>
+						<a class="red" href="javascript:void(0)" data-toggle="modal"
+							data-target="#deviceDeleteModal" (click)="deleteModel(element)" title="Delete">
+							<!-- <i class="far fa-trash-alt"></i> -->
+							<img src="./assets/images/icon-delete.svg">
+						</a>
+					</div>
+				</td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+		</table>
+		<div *ngIf="zoneList.length === 0 || totalRecords === 0 " class="centerclass">No records found</div>
+	</div>
+	<mat-paginator #paginator [length]="totalRecords" [pageIndex]="searchParameters.pageNumber"
+		[pageSize]="searchParameters.pageSize" [pageSizeOptions]="pageSizeOptions"
+		(page)="ChangePaginationAsPageChange($event)" [showFirstLastButtons]="true">
+	</mat-paginator>
+	<app-confirm-dialog [dialogId]="'spaceStatusModal'" [status]="changeStatusDeviceStatus" [msgType]="0"
+		[moduleName]="changeStatusDeviceName" (onSave)="changeDeviceStatus()"></app-confirm-dialog>

@@ -1,0 +1,21 @@
+
+
+<div class="drag-body dashboard-widget m-b-30">
+	<div class="panel-heading" [ngStyle]="{'background':widget?.widgetProperty?.background}">
+		<h5 class="panel-title"
+		[ngStyle]="{'font-size':widget?.widgetProperty?.fontSize+'px',
+		'font-family':widget?.widgetProperty?.fontFamily,
+		'color':widget?.widgetProperty?.fontColor}">{{widget?.widgetProperty?.title}}: {{preyear}}-{{currentyear}} </h5>
+	</div>
+	
+	  <div >
+		 <google-chart *ngIf="chart['EnergyConsumption']['dataTable'].length" #cchart [data]="chart['EnergyConsumption']">
+		  </google-chart>
+		   <div *ngIf="!chart['EnergyConsumption']['dataTable'].length"
+          class="text-center d-flex align-items-center justify-content-center" style="height: 300px;">
+       No data found
+     </div>
+	  </div>
+	
+  </div>
+ 

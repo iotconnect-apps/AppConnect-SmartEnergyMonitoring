@@ -1,0 +1,24 @@
+<div class="drag-body dashboard-widget">
+	<div class="panel-heading" [ngStyle]="{'background':widget?.widgetProperty?.background}">
+		<h5 class="panel-title"
+		[ngStyle]="{'font-size':widget?.widgetProperty?.fontSize+'px',
+		'font-family':widget?.widgetProperty?.fontFamily,
+		'color':widget?.widgetProperty?.fontColor}">{{widget?.widgetProperty?.title}} </h5>
+	</div>
+
+		<agm-map [latitude]="lat" [longitude]="lng" [ngStyle]="{'height':mapHeight}" [zoom]="widget?.widgetProperty?.zoom" >
+			<agm-marker *ngFor="let facility of facilityList" [latitude]="facility.latitude ? facility.latitude : lat"
+			[longitude]="facility.longitude ? facility.longitude : lng"
+			[iconUrl]="{ url: '../../../../assets/images/icon-location.svg'}">
+			<agm-info-window [disableAutoPan]="false" [isOpen]="true" #infoWindow>
+			  <strong>{{facility.name}}</strong>
+			  <p>Total Zones -{{facility.totalSubEntities}}</p>
+			  <p>Total Meters -{{facility.totalDevices}}</p>
+			  <p>Total Alerts -{{facility.totalAlerts}}</p>
+			</agm-info-window>
+		  </agm-marker>
+		</agm-map>
+	
+</div> 
+
+

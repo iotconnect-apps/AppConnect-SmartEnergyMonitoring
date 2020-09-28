@@ -1,0 +1,92 @@
+<!-- Content Header (Page header) -->
+
+<section class="content-header">
+    <h1>{{moduleName}}</h1>
+  </section>
+  <!-- Main content -->
+  
+  <section class="content">
+    <mat-card class="support-card">
+      <div class="row">
+        <div class="col col-ld-11">
+          <form [formGroup]="zoneForm" (ngSubmit)="manageaddZone()" autocomplete="off"
+          class="form-horizontal common-form">
+            <div class="row">
+              <div class="col-md-6">
+                <fieldset class="form-group form-field">
+                    <label class="form-label">Zone ID<b>*</b></label>
+                    <mat-form-field>
+                      <input matInput name="type" formControlName="type" type="text" maxlength="50"
+                             class="form-control" [(ngModel)]="zoneObject.type"placeholder="Enter Zone ID">
+                             <div class="form-control-feedback" *ngIf="zoneForm.controls['type'].errors">
+                              <p class="form-tooltip-error sm" [ngClass]="{'error':true}"
+                                 *ngIf="zoneForm.controls['type'].errors.required && checkSubmitStatus">
+                                 Please enter Zone Id
+                              </p>
+                            </div>
+                    </mat-form-field>
+                  </fieldset>
+              </div>
+              <div class="col-md-6">
+                <fieldset class="form-group form-field">
+                    <label class="form-label">Zone Name<b>*</b></label>
+                    <mat-form-field>
+                      <input matInput name="name" [(ngModel)]="zoneObject.name" formControlName="name" type="text" maxlength="50"
+                             class="form-control" placeholder="Enter Zone Name">
+                             <div class="form-control-feedback" *ngIf="zoneForm.controls['name'].errors">
+                              <p class="form-tooltip-error sm" [ngClass]="{'error':true}"
+                                 *ngIf="zoneForm.controls['name'].errors.required && checkSubmitStatus">
+                                 Please enter Zone Name
+                              </p>
+                            </div>
+                    </mat-form-field>
+                  </fieldset>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                  <fieldset class="form-group form-field">
+                      <label class="form-label">Facility Name<b>*</b></label>
+                      <mat-form-field>
+                        <mat-select placeholder="Select Facility" [(ngModel)]="zoneObject.parentEntityGuid" formControlName="parentEntityGuid"
+                                     tabindex="1"
+                                   >
+                          <mat-option *ngFor="let facility of facilityList"
+                                      [value]="getdata(facility?.value)">
+                            {{facility.text}}
+                          </mat-option>
+                        </mat-select>
+                        <div class="form-control-feedback" *ngIf="zoneForm.controls['parentEntityGuid'].errors">
+                          <p class="form-tooltip-error sm" [ngClass]="{'error':true}"
+                             *ngIf="zoneForm.controls['parentEntityGuid'].errors.required && checkSubmitStatus">
+                            Please select Facility
+                          </p>
+                        </div>
+                      </mat-form-field>
+                    </fieldset>
+                </div>
+                
+              </div>
+            
+            <div class="row mt-1 mb-0">
+              <div class="col-md-3">
+                <div class="form-field">
+                  <div class="input-field ">
+                    <button mat-flat-button color="primary"
+                            class="text-white " title="Save" type="Save">
+                      Save
+                    </button>
+                    <button mat-flat-button color="primary" [routerLink]="['/zone']" type="button" class="text-white m-l-10" 
+                            title="Cancel">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </mat-card>
+  </section>
+  

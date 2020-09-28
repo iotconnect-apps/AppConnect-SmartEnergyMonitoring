@@ -1,0 +1,69 @@
+<section class="content-header">
+  <h1>{{moduleName}}</h1>
+  <div class="content-header-action align-items-center">
+    <ul class="legend-list mb-0 m-r-20">
+      <li ><span class="status-available"></span>Connected</li>
+      <li ><span class="status-unavailable"></span>Disconnected</li>
+    </ul>
+    <div>
+      <app-search-render [searchValue]="searchParameters.searchText" (searchEvent)="searchTextCallback($event)">
+      </app-search-render>
+    </div>
+    <div class="p-l-20">
+      <button type="button" [routerLink]="['/facilities/add']" mat-flat-button color="primary" class="text-white"
+        title="Add Facility">
+        Add Facility
+      </button>
+    </div>
+  </div>
+</section>
+<div class="content p-t-0">
+  <div class="user-grid-wrapper custom-height-grid-box ng-star-inserted">
+    <div class="row">
+
+      <div *ngFor="let facility of facilityList" class="col-lg-4 col-ld-3 m-b-30 ng-star-inserted">
+        <div class="user-grid-box">
+          <div (click)="activeInactivefacility(facility.guid, true, facility.name)" *ngIf="facility['isActive']"
+            title="Change Status" class="cursor user-status-indicator status-green"></div>
+          <div (click)="activeInactivefacility(facility.guid, false, facility.name)" *ngIf="!facility['isActive']"
+            title="Change Status" class="cursor user-status-indicator status-red"></div>
+          <div class="grid-inner-flex d-flex align-items-center pb-3">
+            <div class="user-image-box">
+              <img alt="" class="img-fluid ng-star-inserted"
+                src="{{facility['image'] == '00000000-0000-0000-0000-000000000000' || facility['image'] == null || facility['image'] == '' ? _appConstant.noImg: mediaUrl + facility['image']}}">
+            </div>
+            <div class="user-detail-box">
+              <h3 class="user-name">
+                <a [routerLink]="['/facilities/facility-dashboard',facility['guid']]">{{facility['name']}}</a>
+              </h3>
+              <div class="facility-location">
+                <div class="d-flex align-items-start">
+                  <div>
+                    <p class="mb-0">Total Zones: <span>{{facility['totalSubEntities']}}</span></p>
+                    <p class="mb-0">Total Meters: <span>{{facility['totalDevices']}}</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="user-actions d-flex flex-wrap">
+            <div class="user-actions-cta text-center ng-star-inserted">
+              <a class="green" title="Edit" [routerLink]="['/facilities/',facility['guid']]">
+                <img alt="Edit" src="../../../assets/images/icon-edit.svg">
+              </a>
+            </div>
+            <div class="user-actions-cta text-center">
+              <a href="javascript:;" data-toggle="modal" data-target="#deviceDeleteModal"
+                (click)="deleteModel(facility)" title="Delete">
+                <img alt="View" src="../../../assets/images/icon-delete.svg">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="facilityList.length === 0" class="centerclass">No records found</div>
+    </div>
+  </div>
+</div>
+<app-confirm-dialog [dialogId]="'spaceStatusModal'" [status]="changeStatusDeviceStatus" [msgType]="0"
+  [moduleName]="changeStatusDeviceName" (onSave)="changeDeviceStatus()"></app-confirm-dialog>
